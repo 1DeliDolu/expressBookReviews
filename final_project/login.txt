@@ -1,2 +1,4 @@
-curl -X POST http://localhost:5000/customer/login -H "Content-Type: application/json" -d "{\"username\":\"user_new\",\"password\":\"pass_new\"}"
+curl -c cookie.txt -X POST http://localhost:5000/customer/login -H "Content-Type: application/json" -d username:user_reg
+curl -c cookie.txt -X POST http://localhost:5000/customer/login -H "Content-Type: application/json" -d password:pass_reg\n%s\n
+curl -c cookie.txt -X POST http://localhost:5000/customer/login -H "Content-Type: application/json" -d username:user_reg
 {"message":"Login successful!"}

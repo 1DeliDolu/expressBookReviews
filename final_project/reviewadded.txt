@@ -1,2 +1,2 @@
-curl -b cookie.txt -X PUT "http://localhost:5000/customer/auth/review/1?review=My%20first%20review"
-{"message":"Review added/updated successfully","isbn":"1","reviews":{"user_new":"My first review"}}
+curl -b cookie.txt -X PUT "http://localhost:5000/customer/auth/review/1?review=Automated%20review"
+{"message":"Review added/updated successfully","isbn":"1","reviews":{"user_reg":"Automated review"}}

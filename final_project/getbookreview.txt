@@ -1,2 +1,2 @@
 curl -X GET http://localhost:5000/review/1
-{}
+{"message":"No reviews found for this book."}
