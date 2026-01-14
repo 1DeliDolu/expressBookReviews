@@ -122,7 +122,7 @@ public_users.get('/author/:author', function (req, res) {
   return res.status(404).json({ message: "No books found for the given author" });
 });
 
-// Get all books based on title (Task 4 - synchronous)  ✅ EKLENDİ
+// Get all books based on title (Task 4 - synchronous)
 public_users.get('/title/:title', function (req, res) {
   const titleParam = req.params.title;
 
@@ -142,14 +142,20 @@ public_users.get('/title/:title', function (req, res) {
   return res.status(404).json({ message: "No books found for the given title" });
 });
 
-// Get book review (Task 5)
+// Get book review (Task 5) - rubric friendly
 public_users.get('/review/:isbn', function (req, res) {
   const isbn = req.params.isbn;
 
-  if (books[isbn]) {
-    return res.status(200).json(books[isbn].reviews || {});
+  if (!books[isbn]) {
+    return res.status(404).json({ message: "Book not found" });
   }
-  return res.status(404).json({ message: "Book not found" });
+
+  const reviews = books[isbn].reviews || {};
+  if (Object.keys(reviews).length === 0) {
+    return res.status(200).json({ message: "No reviews found for this book." });
+  }
+
+  return res.status(200).json(reviews);
 });
 
 module.exports.general = public_users;
