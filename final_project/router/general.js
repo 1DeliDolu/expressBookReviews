@@ -52,9 +52,7 @@ public_users.get('/async/isbn/:isbn', function (req, res) {
 
   axios
     .get(`${baseUrl}/isbn/${encodeURIComponent(isbn)}`)
-    .then((response) => {
-      return res.status(200).json(response.data);
-    })
+    .then((response) => res.status(200).json(response.data))
     .catch((error) => {
       const status = error.response?.status || 500;
       const data = error.response?.data || { message: "Error fetching book by ISBN (async)" };
@@ -86,9 +84,7 @@ public_users.get('/async/title/:title', function (req, res) {
 
   axios
     .get(`${baseUrl}/title/${encodeURIComponent(title)}`)
-    .then((response) => {
-      return res.status(200).json(response.data);
-    })
+    .then((response) => res.status(200).json(response.data))
     .catch((error) => {
       const status = error.response?.status || 500;
       const data = error.response?.data || { message: "Error fetching books by title (async)" };
@@ -126,22 +122,25 @@ public_users.get('/author/:author', function (req, res) {
   return res.status(404).json({ message: "No books found for the given author" });
 });
 
-// Task 13: Get book details by Title using Promises with Axios
-// New endpoint: GET /async/title/:title
-public_users.get('/async/title/:title', function (req, res) {
-  const title = req.params.title;
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
+// Get all books based on title (Task 4 - synchronous)  ✅ EKLENDİ
+public_users.get('/title/:title', function (req, res) {
+  const titleParam = req.params.title;
 
-  axios
-    .get(`${baseUrl}/title/${encodeURIComponent(title)}`)
-    .then((response) => res.status(200).json(response.data))
-    .catch((error) => {
-      const status = error.response?.status || 500;
-      const data = error.response?.data || { message: "Error fetching books by title (async)" };
-      return res.status(status).json(data);
-    });
+  const isbns = Object.keys(books);
+  const matches = [];
+
+  for (const isbn of isbns) {
+    const book = books[isbn];
+    if (book && book.title === titleParam) {
+      matches.push({ isbn, ...book });
+    }
+  }
+
+  if (matches.length > 0) {
+    return res.status(200).json(matches);
+  }
+  return res.status(404).json({ message: "No books found for the given title" });
 });
-
 
 // Get book review (Task 5)
 public_users.get('/review/:isbn', function (req, res) {
